@@ -1,2 +1,2 @@
-# hpp-rbprm-robot-data
-File database for robots using the hpp-rbprm framework
+# talos-rbprm
+File database for Talos robot using the hpp-rbprm framework
