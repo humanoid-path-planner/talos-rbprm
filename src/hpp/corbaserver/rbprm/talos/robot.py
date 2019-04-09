@@ -87,12 +87,12 @@ class Robot (Parent):
     nbSamples = 50000
     octreeSize = 0.01
     cType = "_6_DOF"
-    rLegOffset = [0.,  -0.00018, -0.107]
+    rLegOffset = [0.,  -0.00018, -0.102]
     #rLegOffset[2] += 0.006
     rLegNormal = [0,0,1]
     rLegx = 0.1; rLegy = 0.06
 
-    lLegOffset = [0.,  -0.00018, -0.107]
+    lLegOffset = [0.,  -0.00018, -0.102]
     #lLegOffset[2] += 0.006
     lLegNormal = [0,0,1]
     lLegx = 0.1; lLegy = 0.06
