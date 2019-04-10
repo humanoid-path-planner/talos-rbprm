@@ -146,6 +146,7 @@ class Robot (Parent):
     #MLhand_display.translation = np.matrix([0,  0., -0.11])
     dict_display_offset = {rfoot:MRsole_display, lfoot:MLsole_display, rhand:MRhand_display, lhand:MLhand_display}
 
+    kneeIds = {"Left":10,"Right":16}
 
     def __init__ (self, name = None,load = True):
         Parent.__init__ (self,load)
