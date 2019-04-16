@@ -83,6 +83,23 @@ class Robot (Parent):
         0.5, -0.173046, 0.0002, -0.525366, 0.0, 0.0, 0.1, -0.005,   #Right Arm
         0.0, 0.0]
 
+    postureWeights = [0,0,0,0,0,0,# freeflyer
+    10. ,  100.  , 0. , 0.1,  0. ,  1., #lleg
+    10. ,  100.  , 0. , 0.1,  0. ,  1., #rleg
+    500. , 500.  , #chest
+    50.,   10.  , 10.,  10.,    10. ,  10. , 10. ,  10. , #larm
+    50.,   10.  , 10., 10.,    10. ,  10. ,  10. ,  10. , #rarm
+   100.,  100.]
+
+    postureWeights_straff = [0,0,0,0,0,0,# freeflyer
+    100. ,  1.  , 10. , 10,  1. ,  0., #lleg
+    100. ,  1.  , 10. , 10,  1. ,  0., #rleg
+    500. , 500.  , #chest
+    50.,   10.  , 10.,  10.,    10. ,  10. , 10. ,  10. , #larm
+    50.,   10.  , 10., 10.,    10. ,  10. ,  10. ,  10. , #rarm
+   100.,  100.]
+
+
     # informations required to generate the limbs databases : 
     nbSamples = 50000
     octreeSize = 0.01
