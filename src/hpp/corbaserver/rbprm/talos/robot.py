@@ -83,23 +83,42 @@ class Robot (Parent):
         0.5, -0.173046, 0.0002, -0.525366, 0.0, 0.0, 0.1, -0.005,   #Right Arm
         0.0, 0.0]
 
-    # informations required to generate the limbs databases : 
+    postureWeights = [0,0,0,0,0,0,# freeflyer
+    20. ,  100.  , 0. , 0.1,  0. ,  1., #lleg
+    20. ,  100.  , 0. , 0.1,  0. ,  1., #rleg
+    500. , 500.  , #chest
+    50.,   10.  , 10.,  10.,    10. ,  10. , 10. ,  10. , #larm
+    50.,   10.  , 10., 10.,    10. ,  10. ,  10. ,  10. , #rarm
+   100.,  100.]
 
-    rLegOffset = [0.,  -0.00018, -0.107]
-    rLegOffset[2] += 0.006
+    postureWeights_straff = [0,0,0,0,0,0,# freeflyer
+    100. ,  1.  , 10. , 10,  1. ,  0., #lleg
+    100. ,  1.  , 10. , 10,  1. ,  0., #rleg
+    500. , 500.  , #chest
+    50.,   10.  , 10.,  10.,    10. ,  10. , 10. ,  10. , #larm
+    50.,   10.  , 10., 10.,    10. ,  10. ,  10. ,  10. , #rarm
+   100.,  100.]
+
+
+    # informations required to generate the limbs databases : 
+    nbSamples = 50000
+    octreeSize = 0.01
+    cType = "_6_DOF"
+    rLegOffset = [0.,  -0.00018, -0.102]
+    #rLegOffset[2] += 0.006
     rLegNormal = [0,0,1]
     rLegx = 0.1; rLegy = 0.06
 
-    lLegOffset = [0.,  -0.00018, -0.107]
-    lLegOffset[2] += 0.006
+    lLegOffset = [0.,  -0.00018, -0.102]
+    #lLegOffset[2] += 0.006
     lLegNormal = [0,0,1]
     lLegx = 0.1; lLegy = 0.06
 
-    rArmOffset = [0.055,-0.04,-0.13]
+    rArmOffset = [-0.01,0.,-0.154]
     rArmNormal = [0,0,1]
     rArmx = 0.005; rArmy = 0.005
 
-    lArmOffset = [0.055,0.04,-0.13]
+    lArmOffset = [-0.01,0.,-0.154]
     lArmNormal = [0,0,1]
     lArmx = 0.005; lArmy = 0.005
 
@@ -108,30 +127,29 @@ class Robot (Parent):
     lLegKinematicConstraints=kinematicConstraintsPath+lleg+"_com_constraints.obj" 
     rArmKinematicConstraints=kinematicConstraintsPath+rarm+"_com_constraints.obj" 
     lArmKinematicConstraints=kinematicConstraintsPath+larm+"_com_constraints.obj"
-
+    minDist=0.4
     # data used by scripts : 
     limbs_names = [rLegId,lLegId,rArmId,lArmId]
+    dict_limb_rootJoint = {rLegId:rleg, lLegId:lleg, rArmId:rarm, lArmId:larm}
     dict_limb_joint = {rLegId:rfoot, lLegId:lfoot, rArmId:rhand, lArmId:lhand}
     dict_limb_color_traj = {rfoot:[0,1,0,1], lfoot:[1,0,0,1],rhand:[0,0,1,1],lhand:[0.9,0.5,0,1]}
     FOOT_SAFETY_SIZE = 0.03
     # size of the contact surface (x,y)
-    dict_size={rfoot:[0.2 , 0.13], lfoot:[0.2 , 0.13],rhand:[0.05, 0.05],lhand:[0.05, 0.05]}
+    dict_size={rfoot:[0.2 , 0.13], lfoot:[0.2 , 0.13],rhand:[0.1, 0.1],lhand:[0.1, 0.1]}
 
 
     # various offset used by scripts : 
 
     MRsole_offset = SE3.Identity()
-    MRsole_offset.translation = np.matrix([0.,  -0.00018, -0.107]).T
+    MRsole_offset.translation = np.matrix(rLegOffset).T
     MLsole_offset = SE3.Identity()
-    MLsole_offset.translation = np.matrix([0.,  -0.00018, -0.107]).T
+    MLsole_offset.translation = np.matrix(lLegOffset).T
     MRhand_offset = SE3.Identity()
-    #rot = np.matrix([[0.,1.,0.],[1.,0.,0.],[0.,0.,-1.]])
-    #MRhand_offset.rotation = rot
+    MRhand_offset.translation = np.matrix(rArmOffset).T
     MLhand_offset = SE3.Identity()
-    #rot = np.matrix([[0.,1.,0.],[1.,0.,0.],[0.,0.,-1.]]) # TODO : check this
-    #MRhand_offset.rotation = rot
+    MLhand_offset.translation = np.matrix(lArmOffset).T
     dict_offset = {rfoot:MRsole_offset, lfoot:MLsole_offset, rhand:MRhand_offset, lhand:MLhand_offset}
-
+    dict_normal = {rfoot:rLegNormal, lfoot:lLegNormal, rhand:rArmNormal, lhand:lArmNormal}
 
     # display transform :
 
@@ -145,6 +163,7 @@ class Robot (Parent):
     #MLhand_display.translation = np.matrix([0,  0., -0.11])
     dict_display_offset = {rfoot:MRsole_display, lfoot:MLsole_display, rhand:MRhand_display, lhand:MLhand_display}
 
+    kneeIds = {"Left":10,"Right":16}
 
     def __init__ (self, name = None,load = True):
         Parent.__init__ (self,load)
@@ -152,3 +171,12 @@ class Robot (Parent):
             self.loadFullBodyModel(self.urdfName, self.rootJointType, self.meshPackageName, self.packageName, self.urdfSuffix, self.srdfSuffix)
         if name != None:
             self.name = name
+
+
+    def loadAllLimbs(self,heuristic, analysis = None, nbSamples = nbSamples, octreeSize = octreeSize):
+        for id in self.limbs_names:
+            eff = self.dict_limb_joint[id]
+            self.addLimb(id,self.dict_limb_rootJoint[id],eff,self.dict_offset[eff].translation.T.tolist()[0],self.dict_normal[eff],self.dict_size[eff][0]/2.,self.dict_size[eff][1]/2.,nbSamples,heuristic,octreeSize,self.cType,kinematicConstraintsPath=self.kinematicConstraintsPath+self.dict_limb_rootJoint[id]+"_com_constraints.obj",kinematicConstraintsMin=self.minDist)
+            if analysis :
+                self.runLimbSampleAnalysis(id, analysis, True)
+        
