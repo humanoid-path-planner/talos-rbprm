@@ -43,7 +43,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://talos-rbprm/meshes/talos_trunk_lower_visual.dae" scale="1 1 1"/>
+        <mesh filename="package://talos-rbprm/meshes/talos_trunk_lower_visual_large.dae" scale="1 1 1"/>
       </geometry>
     </visual>    
     <collision>
