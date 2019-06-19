@@ -171,7 +171,12 @@ class Robot (Parent):
             self.loadFullBodyModel(self.urdfName, self.rootJointType, self.meshPackageName, self.packageName, self.urdfSuffix, self.srdfSuffix)
         if name != None:
             self.name = name
-
+        self.joint1L_bounds_prev=self.getJointBounds('leg_left_1_joint')
+        self.joint6L_bounds_prev=self.getJointBounds('leg_left_6_joint')
+        self.joint2L_bounds_prev=self.getJointBounds('leg_left_2_joint')
+        self.joint1R_bounds_prev=self.getJointBounds('leg_right_1_joint')
+        self.joint6R_bounds_prev=self.getJointBounds('leg_right_6_joint')
+        self.joint2R_bounds_prev=self.getJointBounds('leg_right_2_joint')
 
     def loadAllLimbs(self,heuristic, analysis = None, nbSamples = nbSamples, octreeSize = octreeSize):
         for id in self.limbs_names:
@@ -179,4 +184,22 @@ class Robot (Parent):
             self.addLimb(id,self.dict_limb_rootJoint[id],eff,self.dict_offset[eff].translation.T.tolist()[0],self.dict_normal[eff],self.dict_size[eff][0]/2.,self.dict_size[eff][1]/2.,nbSamples,heuristic,octreeSize,self.cType,kinematicConstraintsPath=self.kinematicConstraintsPath+self.dict_limb_rootJoint[id]+"_com_constraints.obj",kinematicConstraintsMin=self.minDist)
             if analysis :
                 self.runLimbSampleAnalysis(id, analysis, True)
-        
+       
+
+
+    def setConstrainedJointsBounds(self):
+        self.setJointBounds('leg_left_1_joint',[-0.34,1.4])
+        self.setJointBounds('leg_left_6_joint',[-0.25,0.25])
+        self.setJointBounds('leg_left_2_joint',[-0.25,0.25])
+        self.setJointBounds('leg_right_1_joint',[-1.4,0.34])
+        self.setJointBounds('leg_right_6_joint',[-0.25,0.25])
+        self.setJointBounds('leg_right_2_joint',[-0.25,0.25])
+
+    def resetJointsBounds(self):
+        self.setJointBounds('leg_left_1_joint',self.joint1L_bounds_prev)
+        self.setJointBounds('leg_left_6_joint',self.joint6L_bounds_prev)
+        self.setJointBounds('leg_left_2_joint',self.joint2L_bounds_prev)
+        self.setJointBounds('leg_right_1_joint',self.joint1R_bounds_prev)
+        self.setJointBounds('leg_right_6_joint',self.joint6R_bounds_prev)
+        self.setJointBounds('leg_right_2_joint',self.joint2R_bounds_prev)
+ 
