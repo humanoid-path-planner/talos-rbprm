@@ -52,6 +52,11 @@ install (FILES
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos_abstract)
 
 install (FILES
+  src/hpp/corbaserver/rbprm/talos_fixedUpper/robot.py
+  src/hpp/corbaserver/rbprm/talos_fixedUpper/__init__.py
+  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos_fixedUpper)
+
+install (FILES
   src/hpp/corbaserver/rbprm/talos/robot.py
   src/hpp/corbaserver/rbprm/talos/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos)
