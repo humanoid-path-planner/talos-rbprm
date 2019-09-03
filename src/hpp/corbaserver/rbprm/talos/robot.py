@@ -33,11 +33,11 @@ class Robot (Parent):
     ## Information about the names of thes joints defining the limbs of the robot
     rLegId = 'talos_rleg_rom'
     rleg = 'leg_right_1_joint'
-    rfoot = 'leg_right_6_joint'
+    rfoot = 'leg_right_sole_fix_joint'
 
     lLegId = 'talos_lleg_rom'
     lleg = 'leg_left_1_joint'
-    lfoot = 'leg_left_6_joint'
+    lfoot = 'leg_left_sole_fix_joint'
 
     rArmId = 'talos_rarm_rom'
     rarm = 'arm_right_1_joint'
@@ -104,13 +104,13 @@ class Robot (Parent):
     nbSamples = 50000
     octreeSize = 0.01
     cType = "_6_DOF"
-    rLegOffset = [0.,  -0.00018, -0.102]
-    #rLegOffset[2] += 0.006
+    rLegOffset = [0.,  0., 0.0]
+    #rLegOffset[2] += 0.005
     rLegNormal = [0,0,1]
     rLegx = 0.1; rLegy = 0.06
 
-    lLegOffset = [0.,  -0.00018, -0.102]
-    #lLegOffset[2] += 0.006
+    lLegOffset = [0.,  0., 0.0]
+    #lLegOffset[2] += 0.005
     lLegNormal = [0,0,1]
     lLegx = 0.1; lLegy = 0.06
 
