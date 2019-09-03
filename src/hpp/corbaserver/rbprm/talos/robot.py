@@ -33,11 +33,11 @@ class Robot (Parent):
     ## Information about the names of thes joints defining the limbs of the robot
     rLegId = 'talos_rleg_rom'
     rleg = 'leg_right_1_joint'
-    rfoot = 'leg_right_6_joint'
+    rfoot = 'leg_right_sole_fix_joint'
 
     lLegId = 'talos_lleg_rom'
     lleg = 'leg_left_1_joint'
-    lfoot = 'leg_left_6_joint'
+    lfoot = 'leg_left_sole_fix_joint'
 
     rArmId = 'talos_rarm_rom'
     rarm = 'arm_right_1_joint'
@@ -48,7 +48,7 @@ class Robot (Parent):
     lhand = 'arm_left_7_joint'
 
     referenceConfig = [
-        0.0, 0.0,  1.0232773,  0.0 ,  0.0, 0.0, 1.,                       #Free flyer
+        0.0, 0.0,  1.02127,  0.0 ,  0.0, 0.0, 1.,                       #Free flyer
         0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708,            #Left Leg
         0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708,            #Right Leg
         0.0 ,  0.006761,                                                  #Chest
@@ -57,7 +57,7 @@ class Robot (Parent):
         0.,  0.];
 
     referenceConfig_legsApart =[
-        0.0, 0.0,  1.0232773,  0.0 ,  0.0, 0.0, 1.,                       #Free flyer
+        0.0, 0.0,  1.02127,  0.0 ,  0.0, 0.0, 1.,                       #Free flyer
         0.0,  0.06, -0.411354,  0.859395, -0.448041, -0.061708,           #Left Leg
         0.0,  -0.06, -0.411354,  0.859395, -0.448041, 0.058292,           #Right Leg
         0.0 ,  0.006761,                                                  #Chest
@@ -66,21 +66,21 @@ class Robot (Parent):
         0.,  0.]
 
     referenceConfig_armsFront =[
-        0.0, 0.0,  1.0232773,  1 ,  0.0, 0.0, 0.0,                     #Free flyer
+        0.0, 0.0,  1.02127,  0 ,  0.0, 0.0, 1.0,                     #Free flyer
         0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708,         #Left Leg
         0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708,         #Right Leg
         0.0 ,  0.006761,                                               #Chest
         -0.5 ,  0.173046, -0.0002, -0.525366, 0.0, -0.0,  0.1,-0.005,  #Left Arm
         0.5 , -0.173046, 0.0002  , -0.525366, 0.0,  0.0,  0.1,-0.005,  #Right Arm
-        0.,  0.]
+        0.,  0.] 
 
     referenceConfig_legsSide=[
-        0.0, 0.0, 0.9832773, 1, 0.0, 0.0, 0.0,                      #Free flyer
+        0, 0, 0.9832773, 0, 0.0, 0.0, 1.0,                      #Free flyer
         1.57, 0.0, -0.611354, 1.059395, -0.448041,-0.001708,        #Left Leg
         -1.57, 0.0, -0.611354, 1.059395, -0.448041, -0.001708,      #Right Leg
          0.0, 0.006761,                                             #Chest
-         -0.5,0.173046, -0.0002, -0.525366, 0.0, -0.0, 0.1, -0.005, #Left Arm
-        0.5, -0.173046, 0.0002, -0.525366, 0.0, 0.0, 0.1, -0.005,   #Right Arm
+        0.25847 ,  0.173046, -0.0002, -0.525366, 0.0, -0.0,  0.1,-0.005,  #Left Arm
+        -0.25847 , -0.173046, 0.0002  , -0.525366, 0.0,  0.0,  0.1,-0.005,#Right Arm
         0.0, 0.0]
 
     postureWeights = [0,0,0,0,0,0,# freeflyer
@@ -104,13 +104,13 @@ class Robot (Parent):
     nbSamples = 50000
     octreeSize = 0.01
     cType = "_6_DOF"
-    rLegOffset = [0.,  -0.00018, -0.102]
-    #rLegOffset[2] += 0.006
+    rLegOffset = [0.,  0., 0.0]
+    #rLegOffset[2] += 0.005
     rLegNormal = [0,0,1]
     rLegx = 0.1; rLegy = 0.06
 
-    lLegOffset = [0.,  -0.00018, -0.102]
-    #lLegOffset[2] += 0.006
+    lLegOffset = [0.,  0., 0.0]
+    #lLegOffset[2] += 0.005
     lLegNormal = [0,0,1]
     lLegx = 0.1; lLegy = 0.06
 
