@@ -29,6 +29,14 @@ class Robot (Parent):
     urdfSuffix = ""
     srdfSuffix = ""
 
+    rLegId = 'talos_rleg_rom'
+    lLegId = 'talos_lleg_rom'
+    rArmId = 'talos_rarm_rom'
+    lArmId = 'talos_larm_rom'
+
+    legX = 0.1
+    legY = 0.06
+
     # reference position of the end effector position for each ROM
 
     ref_EE_lLeg = [-0.008846952891378526, 0.0848172440888579,-1.019272022956703]

@@ -56,6 +56,15 @@ class Robot (Parent):
         -0.25847 , -0.173046, 0.0002  , -0.525366, 0.0,  0.0,  0.1,-0.005,#Right Arm
         0.,  0.];
 
+    referenceConfig_elbowsUp = [
+        0.0, 0.0,  1.02127,  0.0 ,  0.0, 0.0, 1.,                       #Free flyer
+        0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708,            #Left Leg
+        0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708,            #Right Leg
+        0.0 ,  0.006761,                                                  #Chest
+        0.25847 ,  0.173046, -0.0002, -1.2, 0.0, -0.0,  0.1,-0.005,  #Left Arm
+        -0.25847 , -0.173046, 0.0002  , -1.2, 0.0,  0.0,  0.1,-0.005,#Right Arm
+        0.,  0.]
+
     referenceConfig_legsApart =[
         0.0, 0.0,  1.02127,  0.0 ,  0.0, 0.0, 1.,                       #Free flyer
         0.0,  0.06, -0.411354,  0.859395, -0.448041, -0.061708,           #Left Leg
@@ -90,6 +99,9 @@ class Robot (Parent):
     50.,   10.  , 10.,  10.,    10. ,  10. , 10. ,  10. , #larm
     50.,   10.  , 10., 10.,    10. ,  10. ,  10. ,  10. , #rarm
    100.,  100.]
+
+    postureWeightsRootRotationConstrained = postureWeights[::]
+    postureWeightsRootRotationConstrained[3:5] = [500,500]
 
     postureWeights_straff = [0,0,0,0,0,0,# freeflyer
     100. ,  1.  , 10. , 10,  1. ,  0., #lleg
