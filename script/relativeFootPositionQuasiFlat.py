@@ -190,8 +190,7 @@ def printFootPositionRelativeToOther(nbConfigs):
                                   else:
                                     if rp[1] > -MARGIN_FEET_SIDE:
                                       compoints[j].append(rp)    
-                                #~ elif(p[1] < -0.05):
-                                        #~ points[j].append(p[:3])
+
 
 				#~ compoints[j].append(p[:3])
                         
