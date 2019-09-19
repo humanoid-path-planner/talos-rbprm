@@ -30,6 +30,7 @@ class Robot (Parent):
     urdfSuffix = "_reduced"
     srdfSuffix = ""
 
+    DEFAULT_COM_HEIGHT = 0.86
     ## Information about the names of thes joints defining the limbs of the robot
     rLegId = 'talos_rleg_rom'
     rleg = 'leg_right_1_joint'
