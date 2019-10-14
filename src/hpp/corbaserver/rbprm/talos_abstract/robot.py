@@ -37,6 +37,7 @@ class Robot (Parent):
     legX = 0.1
     legY = 0.06
 
+    ref_height = 1.02127
     # reference position of the end effector position for each ROM
 
     ref_EE_lLeg = [-0.008846952891378526, 0.0848172440888579,-1.019272022956703]
