@@ -54,7 +54,11 @@ class Robot (Parent):
             self.loadModel(self.urdfName, self.urdfNameRom, self.rootJointType, self.meshPackageName, self.packageName, self.urdfSuffix, self.srdfSuffix)
         if name != None:
             self.name = name
-        self.setReferenceEndEffector('talos_lleg_rom',self.ref_EE_lLeg)
-        self.setReferenceEndEffector('talos_rleg_rom',self.ref_EE_rLeg)
-        self.setReferenceEndEffector('talos_larm_rom',self.ref_EE_lArm)
-        self.setReferenceEndEffector('talos_rarm_rom',self.ref_EE_rArm)
+        if 'talos_lleg_rom' in self.urdfNameRom:
+            self.setReferenceEndEffector('talos_lleg_rom',self.ref_EE_lLeg)
+        if 'talos_rleg_rom' in self.urdfNameRom:
+            self.setReferenceEndEffector('talos_rleg_rom',self.ref_EE_rLeg)
+        if 'talos_larm_rom' in self.urdfNameRom:
+            self.setReferenceEndEffector('talos_larm_rom',self.ref_EE_lArm)
+        if 'talos_rarm_rom' in self.urdfNameRom:
+            self.setReferenceEndEffector('talos_rarm_rom',self.ref_EE_rArm)
