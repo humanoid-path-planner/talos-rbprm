@@ -20,7 +20,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 SET(PROJECT_NAME talos-rbprm)
 SET(PROJECT_DESCRIPTION "Database for talos robot using hpp-rbprm")
 
-
 INCLUDE(cmake/hpp.cmake)
 INCLUDE(cmake/python.cmake)
 
@@ -28,9 +27,9 @@ SET(CXX_DISABLE_WERROR true)
 
 SET(CUSTOM_HEADER_DIR "hpp/talos-rbprm")
 
+CMAKE_POLICY(SET CMP0048 OLD)  # we compute the PROJECT_VERSION manually
 PROJECT(${PROJECT_NAME} CXX)
 
-# search for python
 FINDPYTHON()
 
 PKG_CONFIG_APPEND_LIBS(${PROJECT_NAME})
@@ -38,25 +37,20 @@ PKG_CONFIG_APPEND_LIBS(${PROJECT_NAME})
 SET(CATKIN_PACKAGE_SHARE_DESTINATION
   ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 
-
-install(DIRECTORY
+INSTALL(DIRECTORY
   data/talos/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )
 
-install (FILES
-  src/hpp/corbaserver/rbprm/talos_abstract/robot.py
-  src/hpp/corbaserver/rbprm/talos_abstract/__init__.py
-  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos_abstract)
+STRING(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
 
-install (FILES
-  src/hpp/corbaserver/rbprm/talos_fixedUpper/robot.py
-  src/hpp/corbaserver/rbprm/talos_fixedUpper/__init__.py
-  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos_fixedUpper)
+SET(${PROJECT_NAME}_PYTHON_FILES
+  __init__.py
+  talos_abstract.py
+  talos_fixedUpper.py
+  talos.py
+  )
 
-install (FILES
-  src/hpp/corbaserver/rbprm/talos/robot.py
-  src/hpp/corbaserver/rbprm/talos/__init__.py
-  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos)
-
-SETUP_PROJECT_FINALIZE()
+FOREACH(SOURCE ${${PROJECT_NAME}_PYTHON_FILES})
+  PYTHON_INSTALL_ON_SITE(${PY_NAME} ${SOURCE})
+ENDFOREACH(SOURCE ${${PROJECT_NAME}_PYTHON_SOURCES})
