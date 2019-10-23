@@ -15,22 +15,20 @@
 # hpp-rbprm-corba.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-# Requires at least CMake 2.6 to configure the package.
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-
-SET(CXX_DISABLE_WERROR true)
-
-INCLUDE(cmake/base.cmake)
-INCLUDE(cmake/idl.cmake)
-INCLUDE(cmake/python.cmake)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(PROJECT_NAME talos-rbprm)
 SET(PROJECT_DESCRIPTION "Database for talos robot using hpp-rbprm")
-SET(PROJECT_URL "")
+
+
+INCLUDE(cmake/hpp.cmake)
+INCLUDE(cmake/python.cmake)
+
+SET(CXX_DISABLE_WERROR true)
 
 SET(CUSTOM_HEADER_DIR "hpp/talos-rbprm")
 
-SETUP_PROJECT ()
+PROJECT(${PROJECT_NAME} CXX)
 
 # search for python
 FINDPYTHON()
@@ -39,13 +37,13 @@ PKG_CONFIG_APPEND_LIBS(${PROJECT_NAME})
 
 SET(CATKIN_PACKAGE_SHARE_DESTINATION
   ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
-  
- 
+
+
 install(DIRECTORY
   data/talos/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )
-  
+
 install (FILES
   src/hpp/corbaserver/rbprm/talos_abstract/robot.py
   src/hpp/corbaserver/rbprm/talos_abstract/__init__.py
@@ -62,4 +60,3 @@ install (FILES
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rbprm/talos)
 
 SETUP_PROJECT_FINALIZE()
-
