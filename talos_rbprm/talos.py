@@ -397,11 +397,11 @@ class Robot(Parent):
 
     kneeIds = {"Left": 10, "Right": 16}
 
-    def __init__(self, name=None, load=True):
-        Parent.__init__(self, load)
+    def __init__(self, name=None, load=True, client=None, clientRbprm=None):
+        Parent.__init__(self, load, clientRbprm)
         if load:
             self.loadFullBodyModel(self.urdfName, self.rootJointType, self.meshPackageName, self.packageName,
-                                   self.urdfSuffix, self.srdfSuffix)
+                                   self.urdfSuffix, self.srdfSuffix, client)
         if name is not None:
             self.name = name
         self.joint1L_bounds_prev = self.getJointBounds('leg_left_1_joint')
