@@ -219,7 +219,7 @@ class Robot(Parent):
             self.addLimb(id,
                          self.dict_limb_rootJoint[id],
                          eff,
-                         self.dict_offset[eff].translation.T.tolist()[0],
+                         self.dict_offset[eff].translation.tolist(),
                          self.dict_normal[eff],
                          self.dict_size[eff][0] / 2.,
                          self.dict_size[eff][1] / 2.,
