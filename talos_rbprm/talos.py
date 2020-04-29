@@ -404,6 +404,11 @@ class Robot(Parent):
                                    self.urdfSuffix, self.srdfSuffix)
         if name is not None:
             self.name = name
+        # Even though the bound in the urdf is greater than this values, 
+        # the controller do not tolerate values outside of this bounds
+        self.setJointBounds('leg_left_5_joint', [-1.26, 0.768])
+        self.setJointBounds('leg_right_5_joint', [-1.26, 0.768])
+        # Save urdf values for the bounds that may be modified
         self.joint1L_bounds_prev = self.getJointBounds('leg_left_1_joint')
         self.joint6L_bounds_prev = self.getJointBounds('leg_left_6_joint')
         self.joint2L_bounds_prev = self.getJointBounds('leg_left_2_joint')
