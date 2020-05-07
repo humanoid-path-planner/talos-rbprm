@@ -34,11 +34,11 @@ class Robot(Parent):
     ref_EE_lArm = [0.13028765672452458, 0.44360498616312666, -0.2881211563246389]
     ref_EE_rArm = [0.13028765672452458, -0.44360498616312666, -0.2881211563246389]
 
-    def __init__(self, name=None, load=True):
-        Parent.__init__(self, load)
+    def __init__(self, name=None, load=True, client=None, clientRbprm=None):
+        Parent.__init__(self, load, clientRbprm)
         if load:
             self.loadModel(self.urdfName, self.urdfNameRom, self.rootJointType, self.meshPackageName, self.packageName,
-                           self.urdfSuffix, self.srdfSuffix)
+                           self.urdfSuffix, self.srdfSuffix, client=client)
         if name is not None:
             self.name = name
         if 'talos_lleg_rom' in self.urdfNameRom:
