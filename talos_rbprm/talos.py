@@ -9,6 +9,7 @@ from pinocchio import SE3
 
 class Robot(Parent):
     #  Information to retrieve urdf and srdf files.
+    name = "talos"
     packageName = "talos_data"
     meshPackageName = "talos_data"
     rootJointType = "freeflyer"
@@ -398,12 +399,10 @@ class Robot(Parent):
     kneeIds = {"Left": 10, "Right": 16}
 
     def __init__(self, name=None, load=True, client=None, clientRbprm=None):
-        Parent.__init__(self, load, clientRbprm)
-        if load:
-            self.loadFullBodyModel(self.urdfName, self.rootJointType, self.meshPackageName, self.packageName,
-                                   self.urdfSuffix, self.srdfSuffix, client)
         if name is not None:
             self.name = name
+        Parent.__init__(self, self.name, self.rootJointType, load, client, None, clientRbprm)
+
         # Even though the bound in the urdf is greater than this values, 
         # the controller do not tolerate values outside of this bounds
         self.setJointBounds('leg_left_5_joint', [-1.26, 0.768])
