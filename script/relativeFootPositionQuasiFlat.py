@@ -12,7 +12,7 @@ from scipy.spatial import ConvexHull
 
 from talos_rbprm.talos import Robot
 
-from .constants_and_tools import hull_to_obj
+from hpp.corbaserver.rbprm.tools.constants_and_tools import hull_to_obj
 
 NUM_SAMPLES = 18000
 IT_DISPLAY_PROGRESS = NUM_SAMPLES / 10
