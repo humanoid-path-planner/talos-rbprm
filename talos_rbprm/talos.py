@@ -393,7 +393,14 @@ class Robot(Parent):
     MLhand_offset.translation = np.matrix(lArmOffset).T
     dict_offset = {rfoot: MRsole_offset, lfoot: MLsole_offset, rhand: MRhand_offset, lhand: MLhand_offset}
     dict_normal = {rfoot: rLegNormal, lfoot: lLegNormal, rhand: rArmNormal, lhand: lArmNormal}
-
+    ref_EE_lLeg = np.array([0, 0.0848172440888579, -1.019272022956703])
+    ref_EE_rLeg = np.array([0, -0.0848172440888579, -1.019272022956703])
+    ref_EE_lArm = np.array([0.13028765672452458, 0.44360498616312666, -0.2881211563246389])
+    ref_EE_rArm = np.array([0.13028765672452458, -0.44360498616312666, -0.2881211563246389])
+    dict_ref_effector_from_root = {rLegId:ref_EE_rLeg, # Effector position in the reference configuration, in the root frame
+                                   lLegId:ref_EE_lLeg,
+                                   rArmId:ref_EE_rArm,
+                                   lArmId:ref_EE_lArm}
     # display transform :
 
     # MRsole_display = MRsole_offset.copy()
