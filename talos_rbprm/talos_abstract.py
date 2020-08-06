@@ -8,6 +8,7 @@ from hpp.corbaserver.rbprm.rbprmbuilder import Builder as Parent
 class Robot(Parent):
     ##
     #  Information to retrieve urdf and srdf files.
+    name = "talos_trunk"
     rootJointType = 'freeflyer'
     packageName = 'talos-rbprm'
     meshPackageName = 'talos-rbprm'
@@ -35,12 +36,9 @@ class Robot(Parent):
     ref_EE_rArm = [0.13028765672452458, -0.44360498616312666, -0.2881211563246389]
 
     def __init__(self, name=None, load=True, client=None, clientRbprm=None):
-        Parent.__init__(self, load, clientRbprm)
-        if load:
-            self.loadModel(self.urdfName, self.urdfNameRom, self.rootJointType, self.meshPackageName, self.packageName,
-                           self.urdfSuffix, self.srdfSuffix, client=client)
         if name is not None:
             self.name = name
+        Parent.__init__(self, self.name, self.rootJointType, load, client, None, clientRbprm)
         if 'talos_lleg_rom' in self.urdfNameRom:
             self.setReferenceEndEffector('talos_lleg_rom', self.ref_EE_lLeg)
         if 'talos_rleg_rom' in self.urdfNameRom:
