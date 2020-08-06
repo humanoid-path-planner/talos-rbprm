@@ -3,7 +3,7 @@
 # Author: Pierre Fernbach
 
 import numpy as np
-
+import os
 from hpp.corbaserver.rbprm.rbprmfullbody import FullBody as Parent
 from pinocchio import SE3
 
@@ -358,12 +358,20 @@ class Robot(Parent):
     lArmx = 0.005
     lArmy = 0.005
 
+    # Paths to constraints files:
     kinematicConstraintsPath = "package://talos-rbprm/com_inequalities/"
     rLegKinematicConstraints = kinematicConstraintsPath + rleg + "_com_constraints.obj"
     lLegKinematicConstraints = kinematicConstraintsPath + lleg + "_com_constraints.obj"
     rArmKinematicConstraints = kinematicConstraintsPath + rarm + "_com_constraints.obj"
     lArmKinematicConstraints = kinematicConstraintsPath + larm + "_com_constraints.obj"
     minDist = 0.4
+    # Constraints used by SL1M:
+    filekin_right = os.environ["INSTALL_HPP_DIR"] + "/share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_RF_effector_frame_REDUCED.obj"
+    filekin_left = os.environ["INSTALL_HPP_DIR"] + "/share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_LF_effector_frame_REDUCED.obj"
+    file_rf_in_lf = os.environ["INSTALL_HPP_DIR"]  + "/share/talos-rbprm/relative_effector_positions/RF_constraints_in_LF_quasi_flat_REDUCED.obj"
+    file_lf_in_rf = os.environ["INSTALL_HPP_DIR"]  + "/share/talos-rbprm/relative_effector_positions/LF_constraints_in_RF_quasi_flat_REDUCED.obj"
+    kinematic_constraints_path = os.environ["INSTALL_HPP_DIR"] + "/share/talos-rbprm/com_inequalities/feet_quasi_flat/"
+    relative_feet_constraints_path = os.environ["INSTALL_HPP_DIR"] + "/share/talos-rbprm/relative_effector_positions/"
     # data used by scripts :
     limbs_names = [rLegId, lLegId, rArmId, lArmId]
     dict_limb_rootJoint = {rLegId: rleg, lLegId: lleg, rArmId: rarm, lArmId: larm}
