@@ -444,7 +444,7 @@ class Robot(Parent):
         self.joint6R_bounds_prev = self.getJointBounds('leg_right_6_joint')
         self.joint2R_bounds_prev = self.getJointBounds('leg_right_2_joint')
 
-    def loadAllLimbs(self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize):
+    def loadAllLimbs(self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize, disableEffectorCollision=False):
         for id in self.limbs_names:
             eff = self.dict_limb_joint[id]
             self.addLimb(id,
@@ -460,7 +460,8 @@ class Robot(Parent):
                          self.cType,
                          kinematicConstraintsPath=self.kinematicConstraintsPath + self.dict_limb_rootJoint[id] +
                          "_com_constraints.obj",
-                         kinematicConstraintsMin=self.minDist)
+                         kinematicConstraintsMin=self.minDist,
+                         disableEffectorCollision=disableEffectorCollision)
             if analysis:
                 self.runLimbSampleAnalysis(id, analysis, True)
 
