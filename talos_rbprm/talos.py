@@ -3,6 +3,7 @@
 # Author: Pierre Fernbach
 
 import numpy as np
+
 from hpp.corbaserver.rbprm.rbprmfullbody import FullBody as Parent
 from pinocchio import SE3
 
@@ -10,8 +11,8 @@ from pinocchio import SE3
 class Robot(Parent):
     #  Information to retrieve urdf and srdf files.
     name = "talos"
-    packageName = "talos_data"
-    meshPackageName = "talos_data"
+    packageName = "example-robot-data/robots/talos_data"
+    meshPackageName = "example-robot-data/robots/talos_data"
     rootJointType = "freeflyer"
     urdfName = "talos"
     urdfSuffix = "_reduced"
@@ -403,7 +404,7 @@ class Robot(Parent):
             self.name = name
         Parent.__init__(self, self.name, self.rootJointType, load, client, None, clientRbprm)
 
-        # Even though the bound in the urdf is greater than this values, 
+        # Even though the bound in the urdf is greater than this values,
         # the controller do not tolerate values outside of this bounds
         self.setJointBounds('leg_left_5_joint', [-1.26, 0.768])
         self.setJointBounds('leg_right_5_joint', [-1.26, 0.768])
