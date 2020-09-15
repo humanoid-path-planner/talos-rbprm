@@ -396,13 +396,13 @@ class Robot(Parent):
     # various offset used by scripts :
 
     MRsole_offset = SE3.Identity()
-    MRsole_offset.translation = np.matrix(rLegOffset).T
+    MRsole_offset.translation = np.array(rLegOffset)
     MLsole_offset = SE3.Identity()
-    MLsole_offset.translation = np.matrix(lLegOffset).T
+    MLsole_offset.translation = np.array(lLegOffset)
     MRhand_offset = SE3.Identity()
-    MRhand_offset.translation = np.matrix(rArmOffset).T
+    MRhand_offset.translation = np.array(rArmOffset)
     MLhand_offset = SE3.Identity()
-    MLhand_offset.translation = np.matrix(lArmOffset).T
+    MLhand_offset.translation = np.array(lArmOffset)
     dict_offset = {rfoot: MRsole_offset, lfoot: MLsole_offset, rhand: MRhand_offset, lhand: MLhand_offset}
     dict_normal = {rfoot: rLegNormal, lfoot: lLegNormal, rhand: rArmNormal, lhand: lArmNormal}
     ref_EE_lLeg = np.array([0, 0.0848172440888579, -1.019272022956703])
