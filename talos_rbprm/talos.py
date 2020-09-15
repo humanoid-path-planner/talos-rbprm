@@ -39,7 +39,7 @@ class Robot(Parent):
     referenceConfig = [
         0.0,
         0.0,
-        1.02127,
+        1.0225,
         0.0,
         0.0,
         0.0,
@@ -81,7 +81,7 @@ class Robot(Parent):
     referenceConfig_elbowsUp = [
         0.0,
         0.0,
-        1.02127,
+        1.0225,
         0.0,
         0.0,
         0.0,
@@ -123,7 +123,7 @@ class Robot(Parent):
     referenceConfig_legsApart = [
         0.0,
         0.0,
-        1.02127,
+        1.0225,
         0.0,
         0.0,
         0.0,
@@ -165,7 +165,7 @@ class Robot(Parent):
     referenceConfig_armsFront = [
         0.0,
         0.0,
-        1.02127,
+        1.0225,
         0,
         0.0,
         0.0,
@@ -207,7 +207,7 @@ class Robot(Parent):
     referenceConfig_legsSide = [
         0,
         0,
-        0.9832773,
+        1.,
         0,
         0.0,
         0.0,
@@ -336,13 +336,13 @@ class Robot(Parent):
     octreeSize = 0.01
     cType = "_6_DOF"
     rLegOffset = [0., 0., 0.0]
-    # rLegOffset[2] += 0.005
+    rLegOffset[2] -= 0.005
     rLegNormal = [0, 0, 1]
     rLegx = 0.1
     rLegy = 0.06
 
     lLegOffset = [0., 0., 0.0]
-    # lLegOffset[2] += 0.005
+    lLegOffset[2] -= 0.005
     lLegNormal = [0, 0, 1]
     lLegx = 0.1
     lLegy = 0.06
