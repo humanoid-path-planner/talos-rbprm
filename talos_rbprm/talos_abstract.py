@@ -25,7 +25,7 @@ class Robot(Parent):
     legX = 0.1
     legY = 0.06
 
-    ref_height = 1.0225
+    ref_height = 1.01977
     # reference position of the end effector position for each ROM
     ref_EE_lLeg = [-0.008846952891378526, 0.0848172440888579, -1.01977]
     ref_EE_lLeg[0] = 0.  # assure symetry of dynamic constraints on flat ground
