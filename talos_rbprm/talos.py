@@ -3,10 +3,14 @@
 # Author: Pierre Fernbach
 
 import numpy as np
-
+import os
 from hpp.corbaserver.rbprm.rbprmfullbody import FullBody as Parent
 from pinocchio import SE3
+from pathlib import Path
 
+def prefix(module):
+    """$prefix/lib/pythonX.Y/site-packages/$module/__init__.py: extract prefix from module"""
+    return Path(module.__file__).parent.parent.parent.parent.parent
 
 class Robot(Parent):
     #  Information to retrieve urdf and srdf files.
@@ -40,7 +44,7 @@ class Robot(Parent):
     referenceConfig = [
         0.0,
         0.0,
-        1.0225,
+        1.01977,
         0.0,
         0.0,
         0.0,
@@ -82,7 +86,7 @@ class Robot(Parent):
     referenceConfig_elbowsUp = [
         0.0,
         0.0,
-        1.0225,
+        1.01977,
         0.0,
         0.0,
         0.0,
@@ -124,7 +128,7 @@ class Robot(Parent):
     referenceConfig_legsApart = [
         0.0,
         0.0,
-        1.0225,
+        1.01977,
         0.0,
         0.0,
         0.0,
@@ -166,7 +170,7 @@ class Robot(Parent):
     referenceConfig_armsFront = [
         0.0,
         0.0,
-        1.0225,
+        1.01977,
         0,
         0.0,
         0.0,
@@ -358,12 +362,20 @@ class Robot(Parent):
     lArmx = 0.005
     lArmy = 0.005
 
+    # Paths to constraints files:
     kinematicConstraintsPath = "package://talos-rbprm/com_inequalities/"
     rLegKinematicConstraints = kinematicConstraintsPath + rleg + "_com_constraints.obj"
     lLegKinematicConstraints = kinematicConstraintsPath + lleg + "_com_constraints.obj"
     rArmKinematicConstraints = kinematicConstraintsPath + rarm + "_com_constraints.obj"
     lArmKinematicConstraints = kinematicConstraintsPath + larm + "_com_constraints.obj"
     minDist = 0.4
+    # Constraints used by SL1M:
+    filekin_right = prefix(talos_rbprm) /  "share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_RF_effector_frame_REDUCED.obj"
+    filekin_left = prefix(talos_rbprm) /  "share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_LF_effector_frame_REDUCED.obj"
+    file_rf_in_lf = prefix(talos_rbprm) /  "share/talos-rbprm/relative_effector_positions/RF_constraints_in_LF_quasi_flat_REDUCED.obj"
+    file_lf_in_rf = prefix(talos_rbprm) /  "share/talos-rbprm/relative_effector_positions/LF_constraints_in_RF_quasi_flat_REDUCED.obj"
+    kinematic_constraints_path = prefix(talos_rbprm) /  "share/talos-rbprm/com_inequalities/feet_quasi_flat/"
+    relative_feet_constraints_path = prefix(talos_rbprm) /  "share/talos-rbprm/relative_effector_positions/"
     # data used by scripts :
     limbs_names = [rLegId, lLegId, rArmId, lArmId]
     dict_limb_rootJoint = {rLegId: rleg, lLegId: lleg, rArmId: rarm, lArmId: larm}
@@ -376,16 +388,23 @@ class Robot(Parent):
     # various offset used by scripts :
 
     MRsole_offset = SE3.Identity()
-    MRsole_offset.translation = np.matrix(rLegOffset).T
+    MRsole_offset.translation = np.array(rLegOffset)
     MLsole_offset = SE3.Identity()
-    MLsole_offset.translation = np.matrix(lLegOffset).T
+    MLsole_offset.translation = np.array(lLegOffset)
     MRhand_offset = SE3.Identity()
-    MRhand_offset.translation = np.matrix(rArmOffset).T
+    MRhand_offset.translation = np.array(rArmOffset)
     MLhand_offset = SE3.Identity()
-    MLhand_offset.translation = np.matrix(lArmOffset).T
+    MLhand_offset.translation = np.array(lArmOffset)
     dict_offset = {rfoot: MRsole_offset, lfoot: MLsole_offset, rhand: MRhand_offset, lhand: MLhand_offset}
     dict_normal = {rfoot: rLegNormal, lfoot: lLegNormal, rhand: rArmNormal, lhand: lArmNormal}
-
+    ref_EE_lLeg = np.array([0, 0.0848172440888579, -1.019272022956703])
+    ref_EE_rLeg = np.array([0, -0.0848172440888579, -1.019272022956703])
+    ref_EE_lArm = np.array([0.13028765672452458, 0.44360498616312666, -0.2881211563246389])
+    ref_EE_rArm = np.array([0.13028765672452458, -0.44360498616312666, -0.2881211563246389])
+    dict_ref_effector_from_root = {rLegId:ref_EE_rLeg, # Effector position in the reference configuration, in the root frame
+                                   lLegId:ref_EE_lLeg,
+                                   rArmId:ref_EE_rArm,
+                                   lArmId:ref_EE_lArm}
     # display transform :
 
     # MRsole_display = MRsole_offset.copy()
@@ -417,7 +436,7 @@ class Robot(Parent):
         self.joint6R_bounds_prev = self.getJointBounds('leg_right_6_joint')
         self.joint2R_bounds_prev = self.getJointBounds('leg_right_2_joint')
 
-    def loadAllLimbs(self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize):
+    def loadAllLimbs(self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize, disableEffectorCollision=False):
         for id in self.limbs_names:
             eff = self.dict_limb_joint[id]
             self.addLimb(id,
@@ -433,7 +452,8 @@ class Robot(Parent):
                          self.cType,
                          kinematicConstraintsPath=self.kinematicConstraintsPath + self.dict_limb_rootJoint[id] +
                          "_com_constraints.obj",
-                         kinematicConstraintsMin=self.minDist)
+                         kinematicConstraintsMin=self.minDist,
+                         disableEffectorCollision=disableEffectorCollision)
             if analysis:
                 self.runLimbSampleAnalysis(id, analysis, True)
 
