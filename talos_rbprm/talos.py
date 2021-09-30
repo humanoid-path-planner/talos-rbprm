@@ -2,15 +2,17 @@
 # Copyright (c) 2019 CNRS
 # Author: Pierre Fernbach
 
-import numpy as np
-import os
-from hpp.corbaserver.rbprm.rbprmfullbody import FullBody as Parent
-from pinocchio import SE3
 from pathlib import Path
 
-def prefix(module):
-    """$prefix/lib/pythonX.Y/site-packages/$module/__init__.py: extract prefix from module"""
-    return Path(module.__file__).parent.parent.parent.parent.parent
+import numpy as np
+from hpp.corbaserver.rbprm.rbprmfullbody import FullBody as Parent
+from pinocchio import SE3
+
+
+def prefix_talos_rbprm():
+    """$prefix/lib/pythonX.Y/site-packages/rbprm/talos.py: extract prefix"""
+    return Path(__file__).parent.parent.parent.parent.parent
+
 
 class Robot(Parent):
     #  Information to retrieve urdf and srdf files.
@@ -370,12 +372,12 @@ class Robot(Parent):
     lArmKinematicConstraints = kinematicConstraintsPath + larm + "_com_constraints.obj"
     minDist = 0.4
     # Constraints used by SL1M:
-    filekin_right = prefix(talos_rbprm) /  "share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_RF_effector_frame_REDUCED.obj"
-    filekin_left = prefix(talos_rbprm) /  "share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_LF_effector_frame_REDUCED.obj"
-    file_rf_in_lf = prefix(talos_rbprm) /  "share/talos-rbprm/relative_effector_positions/RF_constraints_in_LF_quasi_flat_REDUCED.obj"
-    file_lf_in_rf = prefix(talos_rbprm) /  "share/talos-rbprm/relative_effector_positions/LF_constraints_in_RF_quasi_flat_REDUCED.obj"
-    kinematic_constraints_path = prefix(talos_rbprm) /  "share/talos-rbprm/com_inequalities/feet_quasi_flat/"
-    relative_feet_constraints_path = prefix(talos_rbprm) /  "share/talos-rbprm/relative_effector_positions/"
+    filekin_right = prefix_talos_rbprm() / "share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_RF_effector_frame_REDUCED.obj"
+    filekin_left = prefix_talos_rbprm() / "share/talos-rbprm/com_inequalities/feet_quasi_flat/COM_constraints_in_LF_effector_frame_REDUCED.obj"
+    file_rf_in_lf = prefix_talos_rbprm() / "share/talos-rbprm/relative_effector_positions/RF_constraints_in_LF_quasi_flat_REDUCED.obj"
+    file_lf_in_rf = prefix_talos_rbprm() / "share/talos-rbprm/relative_effector_positions/LF_constraints_in_RF_quasi_flat_REDUCED.obj"
+    kinematic_constraints_path = prefix_talos_rbprm() / "share/talos-rbprm/com_inequalities/feet_quasi_flat/"
+    relative_feet_constraints_path = prefix_talos_rbprm() / "share/talos-rbprm/relative_effector_positions/"
     # data used by scripts :
     limbs_names = [rLegId, lLegId, rArmId, lArmId]
     dict_limb_rootJoint = {rLegId: rleg, lLegId: lleg, rArmId: rarm, lArmId: larm}
@@ -401,10 +403,12 @@ class Robot(Parent):
     ref_EE_rLeg = np.array([0, -0.0848172440888579, -1.019272022956703])
     ref_EE_lArm = np.array([0.13028765672452458, 0.44360498616312666, -0.2881211563246389])
     ref_EE_rArm = np.array([0.13028765672452458, -0.44360498616312666, -0.2881211563246389])
-    dict_ref_effector_from_root = {rLegId:ref_EE_rLeg, # Effector position in the reference configuration, in the root frame
-                                   lLegId:ref_EE_lLeg,
-                                   rArmId:ref_EE_rArm,
-                                   lArmId:ref_EE_lArm}
+    dict_ref_effector_from_root = {
+        rLegId: ref_EE_rLeg,  # Effector position in the reference configuration, in the root frame
+        lLegId: ref_EE_lLeg,
+        rArmId: ref_EE_rArm,
+        lArmId: ref_EE_lArm
+    }
     # display transform :
 
     # MRsole_display = MRsole_offset.copy()
@@ -436,7 +440,12 @@ class Robot(Parent):
         self.joint6R_bounds_prev = self.getJointBounds('leg_right_6_joint')
         self.joint2R_bounds_prev = self.getJointBounds('leg_right_2_joint')
 
-    def loadAllLimbs(self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize, disableEffectorCollision=False):
+    def loadAllLimbs(self,
+                     heuristic,
+                     analysis=None,
+                     nbSamples=nbSamples,
+                     octreeSize=octreeSize,
+                     disableEffectorCollision=False):
         for id in self.limbs_names:
             eff = self.dict_limb_joint[id]
             self.addLimb(id,
