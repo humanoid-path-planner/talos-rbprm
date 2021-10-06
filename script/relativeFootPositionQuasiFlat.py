@@ -160,8 +160,8 @@ def printFootPositionRelativeToOther(nbConfigs):
                 p = qEffector[0:3]  # (0,0,0) coordinate expressed in effector fram
                 rm = np.zeros((4, 4))
                 for k in range(0, 3):
-                    for l in range(0, 3):
-                        rm[k, l] = rot[k, l]
+                    for j in range(0, 3):
+                        rm[k, j] = rot[k, j]
                 for m in range(0, 3):
                     rm[m, 3] = qEffector[m]
                 rm[3, 3] = 1
@@ -193,8 +193,8 @@ def printFootPositionRelativeToOther(nbConfigs):
                 p = qEffector[0:3]  # (0,0,0) coordinate expressed in effector fram
                 rm = np.zeros((4, 4))
                 for k in range(0, 3):
-                    for l in range(0, 3):
-                        rm[k, l] = rot[k, l]
+                    for j in range(0, 3):
+                        rm[k, j] = rot[k, j]
                 for m in range(0, 3):
                     rm[m, 3] = qEffector[m]
                 rm[3, 3] = 1
