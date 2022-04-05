@@ -13,7 +13,9 @@ srdfSuffix = ""
 
 fullBody = FullBody()
 
-fullBody.loadFullBodyModel(urdfName, rootJointType, meshPackageName, packageName, urdfSuffix, srdfSuffix)
+fullBody.loadFullBodyModel(
+    urdfName, rootJointType, meshPackageName, packageName, urdfSuffix, srdfSuffix
+)
 
 nbSamples = 100000
 
@@ -21,7 +23,7 @@ ps = ProblemSolver(fullBody)
 
 r = Viewer(ps)
 
-rootName = 'base_joint_xyz'
+rootName = "base_joint_xyz"
 
 q_0 = [
     0,
@@ -74,56 +76,64 @@ q_0 = [
     0,
     0,  # gripper_right
     0,
-    0  # head
+    0,  # head
 ]
 r(q_0)
 
 r.addLandmark(r.sceneName, 1)
-r.addLandmark('talos/gripper_left_inner_single_link', 0.3)
-r.addLandmark('talos/gripper_right_inner_single_link', 0.3)
-r.addLandmark('talos/left_sole_link', 0.3)
-r.addLandmark('talos/right_sole_link', 0.3)
+r.addLandmark("talos/gripper_left_inner_single_link", 0.3)
+r.addLandmark("talos/gripper_right_inner_single_link", 0.3)
+r.addLandmark("talos/left_sole_link", 0.3)
+r.addLandmark("talos/right_sole_link", 0.3)
 
-rLegId = 'rleg'
-rLeg = 'leg_right_1_joint'
-rfoot = 'leg_right_sole_fix_joint'
+rLegId = "rleg"
+rLeg = "leg_right_1_joint"
+rfoot = "leg_right_sole_fix_joint"
 rLegOffset = [0, 0, 0.01]
 rLegNormal = [0, 0, 1]
 rLegx = 0.06
 rLegy = 0.1
-fullBody.addLimb(rLegId, rLeg, rfoot, rLegOffset, rLegNormal, rLegx, rLegy, nbSamples, "EFORT", 0.01)
+fullBody.addLimb(
+    rLegId, rLeg, rfoot, rLegOffset, rLegNormal, rLegx, rLegy, nbSamples, "EFORT", 0.01
+)
 
-lLegId = 'lleg'
-lLeg = 'leg_left_1_joint'
-lfoot = 'leg_left_sole_fix_joint'
+lLegId = "lleg"
+lLeg = "leg_left_1_joint"
+lfoot = "leg_left_sole_fix_joint"
 lLegOffset = [0, 0, 0.01]
 lLegNormal = [0, 0, 1]
 lLegx = 0.06
 lLegy = 0.1
-fullBody.addLimb(lLegId, lLeg, lfoot, lLegOffset, rLegNormal, lLegx, lLegy, nbSamples, "EFORT", 0.01)
+fullBody.addLimb(
+    lLegId, lLeg, lfoot, lLegOffset, rLegNormal, lLegx, lLegy, nbSamples, "EFORT", 0.01
+)
 
-rarmId = 'rarm'
-rarm = 'arm_right_1_joint'
-rHand = 'gripper_right_inner_single_joint'
+rarmId = "rarm"
+rarm = "arm_right_1_joint"
+rHand = "gripper_right_inner_single_joint"
 rArmOffset = [0, 0, 0.1]
 rArmNormal = [0, 0, 1]
 rArmx = 0.02
 rArmy = 0.02
-fullBody.addLimb(rarmId, rarm, rHand, rArmOffset, rArmNormal, rArmx, rArmy, nbSamples, "EFORT", 0.01)
+fullBody.addLimb(
+    rarmId, rarm, rHand, rArmOffset, rArmNormal, rArmx, rArmy, nbSamples, "EFORT", 0.01
+)
 
-larmId = 'larm'
-larm = 'arm_left_1_joint'
-lHand = 'gripper_left_inner_single_joint'
+larmId = "larm"
+larm = "arm_left_1_joint"
+lHand = "gripper_left_inner_single_joint"
 lArmOffset = [0, 0, -0.1]
 lArmNormal = [0, 0, 1]
 lArmx = 0.02
 lArmy = 0.02
-fullBody.addLimb(larmId, larm, lHand, lArmOffset, lArmNormal, lArmx, lArmy, nbSamples, "EFORT", 0.01)
+fullBody.addLimb(
+    larmId, larm, lHand, lArmOffset, lArmNormal, lArmx, lArmy, nbSamples, "EFORT", 0.01
+)
 
 
 def printEffPosition(limbId, nbSamples):
     limit = nbSamples - 1
-    f1 = open('./data/talos/roms/' + limbId + '.erom', 'w+')
+    f1 = open("./data/talos/roms/" + limbId + ".erom", "w+")
     for i in range(0, limit):
         q = fullBody.getSamplePosition(limbId, i)
         f1.write(str(q[0]) + "," + str(q[1]) + "," + str(q[2]) + "\n")

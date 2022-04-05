@@ -18,13 +18,13 @@ class Robot(Parent):
     srdfSuffix = ""
 
     # Information about the names of thes joints defining the limbs of the robot
-    rLegId = 'talos_rleg_rom'
-    rleg = 'leg_right_1_joint'
-    rfoot = 'leg_right_6_joint'
+    rLegId = "talos_rleg_rom"
+    rleg = "leg_right_1_joint"
+    rfoot = "leg_right_6_joint"
 
-    lLegId = 'talos_lleg_rom'
-    lleg = 'leg_left_1_joint'
-    lfoot = 'leg_left_6_joint'
+    lLegId = "talos_lleg_rom"
+    lleg = "leg_left_1_joint"
+    lfoot = "leg_left_6_joint"
 
     referenceConfig = [
         0.0,
@@ -33,7 +33,7 @@ class Robot(Parent):
         0.0,
         0.0,
         0.0,
-        1.,  # Free flyer
+        1.0,  # Free flyer
         0.0,
         0.0,
         -0.411354,
@@ -54,7 +54,7 @@ class Robot(Parent):
         0.0,
         0.0,
         0.0,
-        1.,  # Free flyer
+        1.0,  # Free flyer
         0.0,
         0.06,
         -0.411354,
@@ -72,10 +72,10 @@ class Robot(Parent):
         0.0,
         0.0,
         1.01927,
-        0.,
         0.0,
         0.0,
-        1.,  # Free flyer
+        0.0,
+        1.0,  # Free flyer
         0.0,
         0.0,
         -0.411354,
@@ -117,18 +117,18 @@ class Robot(Parent):
         0,
         0,
         0,  # freeflyer
-        20.,
-        100.,
-        0.,
+        20.0,
+        100.0,
+        0.0,
         0.1,
-        0.,
-        1.,  # lleg
-        20.,
-        100.,
-        0.,
+        0.0,
+        1.0,  # lleg
+        20.0,
+        100.0,
+        0.0,
         0.1,
-        0.,
-        1.,  # rleg
+        0.0,
+        1.0,  # rleg
     ]
     postureWeights_straff = [
         0,
@@ -137,31 +137,31 @@ class Robot(Parent):
         0,
         0,
         0,  # freeflyer
-        100.,
-        1.,
-        10.,
+        100.0,
+        1.0,
+        10.0,
         10,
-        1.,
-        0.,  # lleg
-        100.,
-        1.,
-        10.,
+        1.0,
+        0.0,  # lleg
+        100.0,
+        1.0,
+        10.0,
         10,
-        1.,
-        0.,  # rleg
+        1.0,
+        0.0,  # rleg
     ]
 
     # informations required to generate the limbs databases :
     nbSamples = 50000
     octreeSize = 0.01
     cType = "_6_DOF"
-    rLegOffset = [0., -0.00018, -0.102]
+    rLegOffset = [0.0, -0.00018, -0.102]
     # rLegOffset[2] += 0.006
     rLegNormal = [0, 0, 1]
     rLegx = 0.1
     rLegy = 0.06
 
-    lLegOffset = [0., -0.00018, -0.102]
+    lLegOffset = [0.0, -0.00018, -0.102]
     # lLegOffset[2] += 0.006
     lLegNormal = [0, 0, 1]
     lLegx = 0.1
@@ -202,49 +202,60 @@ class Robot(Parent):
     def __init__(self, name=None, load=True):
         Parent.__init__(self, load)
         if load:
-            self.loadFullBodyModel(self.urdfName, self.rootJointType, self.meshPackageName, self.packageName,
-                                   self.urdfSuffix, self.srdfSuffix)
+            self.loadFullBodyModel(
+                self.urdfName,
+                self.rootJointType,
+                self.meshPackageName,
+                self.packageName,
+                self.urdfSuffix,
+                self.srdfSuffix,
+            )
         if name is not None:
             self.name = name
-        self.joint1L_bounds_prev = self.getJointBounds('leg_left_1_joint')
-        self.joint6L_bounds_prev = self.getJointBounds('leg_left_6_joint')
-        self.joint2L_bounds_prev = self.getJointBounds('leg_left_2_joint')
-        self.joint1R_bounds_prev = self.getJointBounds('leg_right_1_joint')
-        self.joint6R_bounds_prev = self.getJointBounds('leg_right_6_joint')
-        self.joint2R_bounds_prev = self.getJointBounds('leg_right_2_joint')
+        self.joint1L_bounds_prev = self.getJointBounds("leg_left_1_joint")
+        self.joint6L_bounds_prev = self.getJointBounds("leg_left_6_joint")
+        self.joint2L_bounds_prev = self.getJointBounds("leg_left_2_joint")
+        self.joint1R_bounds_prev = self.getJointBounds("leg_right_1_joint")
+        self.joint6R_bounds_prev = self.getJointBounds("leg_right_6_joint")
+        self.joint2R_bounds_prev = self.getJointBounds("leg_right_2_joint")
 
-    def loadAllLimbs(self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize):
+    def loadAllLimbs(
+        self, heuristic, analysis=None, nbSamples=nbSamples, octreeSize=octreeSize
+    ):
         for id in self.limbs_names:
             eff = self.dict_limb_joint[id]
-            self.addLimb(id,
-                         self.dict_limb_rootJoint[id],
-                         eff,
-                         self.dict_offset[eff].translation.tolist(),
-                         self.dict_normal[eff],
-                         self.dict_size[eff][0] / 2.,
-                         self.dict_size[eff][1] / 2.,
-                         nbSamples,
-                         heuristic,
-                         octreeSize,
-                         self.cType,
-                         kinematicConstraintsPath=self.kinematicConstraintsPath + self.dict_limb_rootJoint[id] +
-                         "_com_constraints.obj",
-                         kinematicConstraintsMin=self.minDist)
+            self.addLimb(
+                id,
+                self.dict_limb_rootJoint[id],
+                eff,
+                self.dict_offset[eff].translation.tolist(),
+                self.dict_normal[eff],
+                self.dict_size[eff][0] / 2.0,
+                self.dict_size[eff][1] / 2.0,
+                nbSamples,
+                heuristic,
+                octreeSize,
+                self.cType,
+                kinematicConstraintsPath=self.kinematicConstraintsPath
+                + self.dict_limb_rootJoint[id]
+                + "_com_constraints.obj",
+                kinematicConstraintsMin=self.minDist,
+            )
             if analysis:
                 self.runLimbSampleAnalysis(id, analysis, True)
 
     def setConstrainedJointsBounds(self):
-        self.setJointBounds('leg_left_1_joint', [-0.34, 1.4])
-        self.setJointBounds('leg_left_6_joint', [-0.25, 0.25])
-        self.setJointBounds('leg_left_2_joint', [-0.25, 0.25])
-        self.setJointBounds('leg_right_1_joint', [-1.4, 0.34])
-        self.setJointBounds('leg_right_6_joint', [-0.25, 0.25])
-        self.setJointBounds('leg_right_2_joint', [-0.25, 0.25])
+        self.setJointBounds("leg_left_1_joint", [-0.34, 1.4])
+        self.setJointBounds("leg_left_6_joint", [-0.25, 0.25])
+        self.setJointBounds("leg_left_2_joint", [-0.25, 0.25])
+        self.setJointBounds("leg_right_1_joint", [-1.4, 0.34])
+        self.setJointBounds("leg_right_6_joint", [-0.25, 0.25])
+        self.setJointBounds("leg_right_2_joint", [-0.25, 0.25])
 
     def resetJointsBounds(self):
-        self.setJointBounds('leg_left_1_joint', self.joint1L_bounds_prev)
-        self.setJointBounds('leg_left_6_joint', self.joint6L_bounds_prev)
-        self.setJointBounds('leg_left_2_joint', self.joint2L_bounds_prev)
-        self.setJointBounds('leg_right_1_joint', self.joint1R_bounds_prev)
-        self.setJointBounds('leg_right_6_joint', self.joint6R_bounds_prev)
-        self.setJointBounds('leg_right_2_joint', self.joint2R_bounds_prev)
+        self.setJointBounds("leg_left_1_joint", self.joint1L_bounds_prev)
+        self.setJointBounds("leg_left_6_joint", self.joint6L_bounds_prev)
+        self.setJointBounds("leg_left_2_joint", self.joint2L_bounds_prev)
+        self.setJointBounds("leg_right_1_joint", self.joint1R_bounds_prev)
+        self.setJointBounds("leg_right_6_joint", self.joint6R_bounds_prev)
+        self.setJointBounds("leg_right_2_joint", self.joint2R_bounds_prev)
