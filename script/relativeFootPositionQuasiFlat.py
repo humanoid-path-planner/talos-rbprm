@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import numpy as np
+
 # from hpp.corbaserver.rbprm.problem_solver import ProblemSolver
 from hpp.corbaserver import ProblemSolver
 from hpp.corbaserver.rbprm import rbprmstate, state_alg
@@ -19,7 +20,8 @@ IT_DISPLAY_PROGRESS = NUM_SAMPLES / 10
 MIN_DIST_BETWEEN_FEET_Y = 0.18
 MAX_DIST_BETWEEN_FEET_X = 0.35
 MIN_HEIGHT_COM = 0.3
-# margin used to constrain the com y position : if it's on the left of the left foot or on the right of the right foot
+# margin used to constrain the com y position :
+# if it's on the left of the left foot or on the right of the right foot
 # for more than this margin, we reject this sample:
 MARGIN_FEET_SIDE = 0.05
 
@@ -33,36 +35,40 @@ nbSamples = 1
 ps = ProblemSolver(fullBody)
 vf = ViewerFactory(ps)
 v = vf.createViewer()
-rootName = 'root_joint'
+rootName = "root_joint"
 
 nbSamples = 10000
 heuristic = "static"
 print("gen limb db")
-fullBody.addLimb(fullBody.rLegId,
-                 fullBody.rleg,
-                 fullBody.rfoot,
-                 fullBody.rLegOffset,
-                 fullBody.rLegNormal,
-                 fullBody.rLegx,
-                 fullBody.rLegy,
-                 nbSamples,
-                 heuristic,
-                 0.01,
-                 kinematicConstraintsPath=fullBody.rLegKinematicConstraints,
-                 kinematicConstraintsMin=0.75)
+fullBody.addLimb(
+    fullBody.rLegId,
+    fullBody.rleg,
+    fullBody.rfoot,
+    fullBody.rLegOffset,
+    fullBody.rLegNormal,
+    fullBody.rLegx,
+    fullBody.rLegy,
+    nbSamples,
+    heuristic,
+    0.01,
+    kinematicConstraintsPath=fullBody.rLegKinematicConstraints,
+    kinematicConstraintsMin=0.75,
+)
 fullBody.runLimbSampleAnalysis(fullBody.rLegId, "ReferenceConfiguration", True)
-fullBody.addLimb(fullBody.lLegId,
-                 fullBody.lleg,
-                 fullBody.lfoot,
-                 fullBody.lLegOffset,
-                 fullBody.rLegNormal,
-                 fullBody.lLegx,
-                 fullBody.lLegy,
-                 nbSamples,
-                 heuristic,
-                 0.01,
-                 kinematicConstraintsPath=fullBody.lLegKinematicConstraints,
-                 kinematicConstraintsMin=0.75)
+fullBody.addLimb(
+    fullBody.lLegId,
+    fullBody.lleg,
+    fullBody.lfoot,
+    fullBody.lLegOffset,
+    fullBody.rLegNormal,
+    fullBody.lLegx,
+    fullBody.lLegy,
+    nbSamples,
+    heuristic,
+    0.01,
+    kinematicConstraintsPath=fullBody.lLegKinematicConstraints,
+    kinematicConstraintsMin=0.75,
+)
 fullBody.runLimbSampleAnalysis(fullBody.lLegId, "ReferenceConfiguration", True)
 print("db generated.")
 rLegId = fullBody.rLegId
@@ -74,7 +80,7 @@ lLegOffset = fullBody.lLegOffset
 
 # make sure this is 0
 q_0 = fullBody.getCurrentConfig()
-zeroConf = [0, 0, 0, 0, 0, 0, 1.]
+zeroConf = [0, 0, 0, 0, 0, 0, 1.0]
 q_0[0:7] = zeroConf
 fullBody.setCurrentConfig(q_0)
 
@@ -99,11 +105,18 @@ def genFlat():
     posrf = fullBody.getJointPosition(rfoot)[:3]
     poslf = fullBody.getJointPosition(lfoot)[:3]
     s = rbprmstate.State(fullBody, q=q, limbsIncontact=limbIds)
-    s, succ = state_alg.addNewContact(s, rLegId, posrf, [0., 0., 1.], num_max_sample=0)
+    s, succ = state_alg.addNewContact(
+        s, rLegId, posrf, [0.0, 0.0, 1.0], num_max_sample=0
+    )
     if succ:
-        s, succ = state_alg.addNewContact(s, lLegId, poslf, [0., 0., 1.], num_max_sample=0)
+        s, succ = state_alg.addNewContact(
+            s, lLegId, poslf, [0.0, 0.0, 1.0], num_max_sample=0
+        )
     if succ:
-        succ = fullBody.isConfigValid(q)[0] and norm(array(posrf[:2]) - array(poslf[:2])) >= 0.3
+        succ = (
+            fullBody.isConfigValid(q)[0]
+            and norm(array(posrf[:2]) - array(poslf[:2])) >= 0.3
+        )
     # print("sid = ", s.sId)
     # if succ and norm (array(posrf[:2]) - array(poslf[:2]) ) <= 0.1:
     if succ and norm(array(posrf) - array(poslf)) <= 0.1:
@@ -137,7 +150,11 @@ def printFootPositionRelativeToOther(nbConfigs):
                 # print("pos 1", qEffector[:3])
 
                 qtr = q[:]
-                qtr[:3] = [qtr[0] - pos_other[0], qtr[1] - pos_other[1], qtr[2] - pos_other[2]]
+                qtr[:3] = [
+                    qtr[0] - pos_other[0],
+                    qtr[1] - pos_other[1],
+                    qtr[2] - pos_other[2],
+                ]
                 # for l in range(3):
                 # qtr[l] -= pos_other[l]
                 # qtr[i] -= qEffector[i]
@@ -168,12 +185,20 @@ def printFootPositionRelativeToOther(nbConfigs):
                 invrm = np.linalg.inv(rm)
                 # print(invrm)
                 # p = invrm.dot([0,0,0,1])
-                p = invrm.dot([0, 0, 0., 1])
+                p = invrm.dot([0, 0, 0.0, 1])
                 # print("p ", p)
                 # print(norm (array(posrf) - array(poslf) ))
-                if (j == 0 and p[1] > MIN_DIST_BETWEEN_FEET_Y and abs(p[0]) < MAX_DIST_BETWEEN_FEET_X):
+                if (
+                    j == 0
+                    and p[1] > MIN_DIST_BETWEEN_FEET_Y
+                    and abs(p[0]) < MAX_DIST_BETWEEN_FEET_X
+                ):
                     points[j].append(p[:3])
-                elif (j == 1 and p[1] < -MIN_DIST_BETWEEN_FEET_Y and abs(p[0]) < MAX_DIST_BETWEEN_FEET_X):
+                elif (
+                    j == 1
+                    and p[1] < -MIN_DIST_BETWEEN_FEET_Y
+                    and abs(p[0]) < MAX_DIST_BETWEEN_FEET_X
+                ):
                     points[j].append(p[:3])
                 else:
                     addCom = False
@@ -205,7 +230,7 @@ def printFootPositionRelativeToOther(nbConfigs):
                 # print("p ", p)
                 # print("rp ")
 
-                if (rp[2] < MIN_HEIGHT_COM):
+                if rp[2] < MIN_HEIGHT_COM:
                     addCom = False
                 if addCom:
                     if j == 1:
