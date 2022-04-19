@@ -44,7 +44,7 @@ class Robot(Parent):
     referenceConfig = [
         0.0,
         0.0,
-        1.01977,
+        1.02127,
         0.0,
         0.0,
         0.0,
