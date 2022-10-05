@@ -1,45 +1,40 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+cmake_minimum_required(VERSION 3.1)
 
-SET(PROJECT_NAME talos-rbprm)
-SET(PROJECT_DESCRIPTION "Database for talos robot using hpp-rbprm")
+set(PROJECT_NAME talos-rbprm)
+set(PROJECT_DESCRIPTION "Database for talos robot using hpp-rbprm")
 
-SET(CUSTOM_HEADER_DIR "hpp/talos-rbprm")
-SET(PROJECT_USE_CMAKE_EXPORT TRUE)
-SET(CXX_DISABLE_WERROR true)
+set(CUSTOM_HEADER_DIR "hpp/talos-rbprm")
+set(PROJECT_USE_CMAKE_EXPORT TRUE)
+set(CXX_DISABLE_WERROR true)
 
-INCLUDE(cmake/hpp.cmake)
-INCLUDE(cmake/python.cmake)
+include(cmake/hpp.cmake)
+include(cmake/python.cmake)
 
-COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
-PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
+compute_project_args(PROJECT_ARGS LANGUAGES CXX)
+project(${PROJECT_NAME} ${PROJECT_ARGS})
 
-ADD_PROJECT_DEPENDENCY(example-robot-data REQUIRED)
+add_project_dependency(example-robot-data REQUIRED)
 
-FINDPYTHON()
+findpython()
 
-ADD_LIBRARY(${PROJECT_NAME} INTERFACE)
-INSTALL(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
+add_library(${PROJECT_NAME} INTERFACE)
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${TARGETS_EXPORT_NAME}
+  DESTINATION lib)
 
+set(CATKIN_PACKAGE_SHARE_DESTINATION
+    ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 
-SET(CATKIN_PACKAGE_SHARE_DESTINATION
-  ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
+install(DIRECTORY data/talos/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
-INSTALL(DIRECTORY
-  data/talos/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-  )
+string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
 
-STRING(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
+set(${PROJECT_NAME}_PYTHON_FILES __init__.py talos_abstract.py
+                                 talos_fixedUpper.py talos.py)
 
-SET(${PROJECT_NAME}_PYTHON_FILES
-  __init__.py
-  talos_abstract.py
-  talos_fixedUpper.py
-  talos.py
-  )
+foreach(SOURCE ${${PROJECT_NAME}_PYTHON_FILES})
+  python_install_on_site(${PY_NAME} ${SOURCE})
+endforeach(SOURCE ${${PROJECT_NAME}_PYTHON_SOURCES})
 
-FOREACH(SOURCE ${${PROJECT_NAME}_PYTHON_FILES})
-  PYTHON_INSTALL_ON_SITE(${PY_NAME} ${SOURCE})
-ENDFOREACH(SOURCE ${${PROJECT_NAME}_PYTHON_SOURCES})
-
-INSTALL(FILES package.xml DESTINATION share/${PROJECT_NAME})
+install(FILES package.xml DESTINATION share/${PROJECT_NAME})
