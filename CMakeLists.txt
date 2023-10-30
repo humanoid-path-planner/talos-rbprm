@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 
 set(PROJECT_NAME talos-rbprm)
 set(PROJECT_DESCRIPTION "Database for talos robot using hpp-rbprm")
