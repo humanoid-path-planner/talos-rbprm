@@ -1,7 +1,7 @@
 # Importing helper class for RBPRM
-from hpp.corbaserver.rbprm.rbprmfullbody import FullBody
-import quaternion as quat
 import numpy as np
+import quaternion as quat
+from hpp.corbaserver.rbprm.rbprmfullbody import FullBody
 
 packageName = "talos_description"
 meshPackageName = "talos_description"

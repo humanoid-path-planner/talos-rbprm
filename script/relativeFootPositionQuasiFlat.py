@@ -5,6 +5,7 @@ import numpy as np
 # from hpp.corbaserver.rbprm.problem_solver import ProblemSolver
 from hpp.corbaserver import ProblemSolver
 from hpp.corbaserver.rbprm import rbprmstate, state_alg
+from hpp.corbaserver.rbprm.tools.constants_and_tools import hull_to_obj
 from hpp.gepetto import ViewerFactory
 from numpy import array
 from numpy.linalg import norm
@@ -12,8 +13,6 @@ from pinocchio import Quaternion
 from scipy.spatial import ConvexHull
 
 from talos_rbprm.talos import Robot
-
-from hpp.corbaserver.rbprm.tools.constants_and_tools import hull_to_obj
 
 NUM_SAMPLES = 18000
 IT_DISPLAY_PROGRESS = NUM_SAMPLES / 10
