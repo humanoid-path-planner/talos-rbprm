@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import numpy as np
 
 # from hpp.corbaserver.rbprm.problem_solver import ProblemSolver

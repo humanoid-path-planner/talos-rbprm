@@ -22,6 +22,7 @@ has-binaries = false
 extend-exclude = ["cmake"]
 
 [tool.ruff.lint]
+extend-exclude = ["RUF012"]
 extend-select = ["I", "NPY", "RUF", "UP", "W"]
 
 [tool.tomlsort]
