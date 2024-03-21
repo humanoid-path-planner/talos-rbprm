@@ -1,5 +1,22 @@
-[tool.black]
-exclude = "cmake"
+[build-system]
+build-backend = "cmeel.build"
+requires = [
+  "cmeel[build]",
+  "example-robot-data[build]"
+]
+
+[project]
+dependencies = [
+  "cmeel-boost ~= 1.83.0",
+  "example-robot-data"
+]
+description = "Database for talos robot using hpp-rbprm"
+license = "BSD-2-Clause"
+name = "talos-rbprm"
+version = "5.0.0"
+
+[tool.cmeel]
+has-binaries = false
 
 [tool.isort]
 profile = "black"
